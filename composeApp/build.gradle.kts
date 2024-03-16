@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
+    kotlin("plugin.serialization") version "1.9.22"
 }
 
 kotlin {
@@ -24,6 +25,7 @@ kotlin {
             }
         }
         binaries.executable()
+        browser()
     }
     
     androidTarget {
@@ -35,18 +37,29 @@ kotlin {
     }
     
     sourceSets {
-        
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(libs.ktor.client.js)
+            }
+        }
         androidMain.dependencies {
             implementation(libs.compose.ui.tooling.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
+            implementation("io.ktor:ktor-client-content-negotiation:3.0.0-wasm2")
+            implementation("io.ktor:ktor-serialization-kotlinx-json:3.0.0-wasm2")
+            implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.ktor.client.core)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation("co.touchlab:kermit:2.0.3")
         }
     }
 }
@@ -81,6 +94,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     dependencies {
+        implementation(libs.kotlinx.coroutines.android)
         debugImplementation(libs.compose.ui.tooling)
     }
 }
