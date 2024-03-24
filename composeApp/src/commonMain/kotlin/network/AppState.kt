@@ -1,9 +1,8 @@
 package network
 
-import network.dto.GoalDto
-import network.dto.TaskDto
+import network.model.Goal
 
 data class AppState(
-    val goals: List<GoalDto> = emptyList(),
-    val tasks: List<TaskDto> = emptyList(),
+    val goals: List<Goal> = emptyList(),
+    val isButtonEnabled: Boolean = false,
 )

@@ -1,3 +1,5 @@
+package presentation
+
 interface GoalEvent
 
 class UpdateGoalTitle(val title: String) : GoalEvent
